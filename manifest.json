@@ -1,0 +1,20 @@
+{
+  "manifest_version": 2,
+
+  "name": "Flash Card for Space Alc",
+  "description": "This extension will provide kindle like flash card for space alc",
+  "version": "1.0",
+
+  "browser_action": {
+   "default_icon": "popup.png",
+   "default_popup": "popup.html"
+  },
+  "permissions": [
+   "activeTab",
+    "http://eowp.alc.co.jp/"
+   ],
+   "background":
+   {
+     "scripts": ["jquery-2.1.4.min.js", "background.js"]
+   }
+}
