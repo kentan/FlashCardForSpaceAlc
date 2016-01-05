@@ -1,9 +1,9 @@
 {
   "manifest_version": 2,
 
-  "name": "Flash Card for Space Alc",
-  "description": "This extension will provide kindle like flash card for space alc",
-  "version": "1.0",
+  "name": "Flash Card for 英辞郎",
+  "description": "英辞郎 on the WEB Proで登録した単語帳をKindleのようなフラッシュカードで表示します。単語をランダムに一つ一つ表示することによって、手軽に単語を習得できるようにしています。",
+  "version": "1.0.1",
 
   "browser_action": {
    "default_icon": "popup.png",
