@@ -10,7 +10,9 @@
      var max = PAGE_SIZE;
      var page = 0;
      
-     query_next_page(true);
+     
+
+     init();
 
      $("#dict_button").click(function(){
          $("#desc").show();
@@ -28,7 +30,9 @@
          if(index == max - 10){
              query_next_page(false);
          }
+         save_status();
      });
+     
      $("#previous").click(function(){
          if(index <= 0) return;
          index--;
@@ -38,6 +42,7 @@
          $("#delword").show();
          $("#learned").hide();
          id = words[index].id.substr(id_start_index,10);
+         save_status();
      });
      $("#delword").click(function(){
          $.ajax({
@@ -50,11 +55,24 @@
 
           }
         });
-         
+        save_status();
      });
+     
+     function init(){
+         get_first_page();
+         get_saved_status();
+        
+         if( words.length == 0 || descs.length == 0){
+             query_next_page(true);
+         }else{
+             show_words_and_desc();   
+         }
+     }
+     
      function query_next_page(first_page){
          page++;
          var url = "http://eowp.alc.co.jp/wordbook/ej?page=" + page + "&col=2&sort=2";
+         
          $.get(url , function( data ) {
              var el = $(data);
 
@@ -62,12 +80,37 @@
 
              max = PAGE_SIZE * page;
              if(first_page){
-                 $("#word").html(words[index]);
-                 $("#desc").html(descs[index]);
-                 id = words[index].id.substr(id_start_index,10);
+                 show_words_and_desc();
+//                          //alert(data);
+//                 $("#word").html(words[index]);
+//                 $("#desc").html(descs[index]);
+//                 id = words[index].id.substr(id_start_index,10);
+//                 save_max_page(el);
              }
          });
          
+     }
+     
+     function show_words_and_desc(){
+         $("#word").html(words[index]);
+         $("#desc").html(descs[index]);
+         id = words[index].id.substr(id_start_index,10);
+         save_max_page(el);
+     }
+     
+     //TODO need to change words/descs to array that holds only string.
+     // Both contains jquery object but chrome storage seems to convert data to something.
+     function save_status(){
+//         chrome.storage.sync.set({index: 0 }, function() {});
+//         chrome.storage.sync.set({words: words }, function() {});
+//         chrome.storage.sync.set({descs: descs}, function() {});         
+     }
+     function save_max_page(el){
+         var elems = $("[class='bold']",el);
+         var word_count = elems.get(0).innerHTML;
+         var max_page = Math.floor(word_count / PAGE_SIZE ) + 1;
+         chrome.storage.sync.set({max: max_page }, function() {});
+
      }
      
      function push_randomly(el){
@@ -95,5 +138,19 @@
              indexes[l] = indexes[--r],
              indexes[r] = o);
          return indexes;
+     }
+     
+     function get_first_page(){
+         chrome.storage.sync.get("max",function(value){ 
+             page = (value.max == undefined) ? 0 : value.max;
+             page = Math.floor(Math.random() * page);
+         });
+     }
+     //TODO need to change words/descs to array that holds only string.
+     // Both contains jquery object but chrome storage seems to convert data to something.
+     function get_saved_status(){
+//         chrome.storage.sync.get("index",function(value){ index = (value.index == undefined ? 0 : value.index)});
+//         chrome.storage.sync.get("words",function(value){ words = (value.words == undefined ? [] : value.words)});
+//         chrome.storage.sync.get("descs",function(value){ descs = (value.descs == undefined ? [] : value.descs)});       
      }
  });
