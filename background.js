@@ -7,7 +7,7 @@
      var index = 0;
      var id_start_index = "word_text_".length;
      var PAGE_SIZE = 30;
-     var max = PAGE_SIZE;
+     var max = 0;
      var page = 0;
      
      
@@ -78,14 +78,14 @@
 
              push_randomly(el);
 
-             max = PAGE_SIZE * page;
+             max += PAGE_SIZE;
              if(first_page){
                  show_words_and_desc();
 //                          //alert(data);
 //                 $("#word").html(words[index]);
 //                 $("#desc").html(descs[index]);
 //                 id = words[index].id.substr(id_start_index,10);
-//                 save_max_page(el);
+                 save_max_page(el);
              }
          });
          
@@ -95,7 +95,7 @@
          $("#word").html(words[index]);
          $("#desc").html(descs[index]);
          id = words[index].id.substr(id_start_index,10);
-         save_max_page(el);
+         
      }
      
      //TODO need to change words/descs to array that holds only string.
