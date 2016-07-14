@@ -11,8 +11,8 @@
      var page = 0;
      
      
+     get_first_page();
 
-     init();
 
      $("#dict_button").click(function(){
          $("#desc").show();
@@ -59,8 +59,7 @@
      });
      
      function init(){
-         get_first_page();
-         get_saved_status();
+         
         
          if( words.length == 0 || descs.length == 0){
              query_next_page(true);
@@ -144,6 +143,10 @@
          chrome.storage.sync.get("max",function(value){ 
              page = (value.max == undefined) ? 0 : value.max;
              page = Math.floor(Math.random() * page);
+             console.log(page);
+             get_saved_status();
+             init();
+             
          });
      }
      //TODO need to change words/descs to array that holds only string.
